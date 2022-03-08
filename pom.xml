@@ -20,6 +20,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <netty.version>4.1.37.Final</netty.version>
         <fastjson.version>1.2.78</fastjson.version>
+        <lombok.version>1.18.20</lombok.version>
     </properties>
 
     <groupId>com.dyzwj</groupId>
@@ -30,6 +31,7 @@
         <module>rpc-producer</module>
         <module>rpc-consumer</module>
         <module>user-service-api</module>
+        <module>rpc-common</module>
     </modules>
 
 </project>

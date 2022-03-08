@@ -1,0 +1,12 @@
+
+spring:
+  application:
+    name: rpc-producer
+
+registry:
+  file:
+    path: D:\registry\
+
+rpc:
+  server:
+    address: localhost:9090
