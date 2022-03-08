@@ -32,6 +32,7 @@
         <module>rpc-consumer</module>
         <module>user-service-api</module>
         <module>rpc-common</module>
+        <module>rpc-spring</module>
     </modules>
 
 </project>

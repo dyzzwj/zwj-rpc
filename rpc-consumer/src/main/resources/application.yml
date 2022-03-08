@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: rpc-consumer
+
+server:
+  port: 1010
+
+rpc:
+  server:
+    address: localhost:9090
