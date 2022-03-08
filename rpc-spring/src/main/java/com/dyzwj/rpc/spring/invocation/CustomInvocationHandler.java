@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.dyzwj.common.core.Request;
 import com.dyzwj.common.core.Response;
 import com.dyzwj.rpc.spring.client.Client;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -12,6 +13,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Component
 public class CustomInvocationHandler implements InvocationHandler {
 
     private AtomicInteger requestId = new AtomicInteger(0);
@@ -32,7 +34,7 @@ public class CustomInvocationHandler implements InvocationHandler {
         request.setParameters(args);
 
         Class<?> returnType = method.getReturnType();
-
+        //发送请求
         Response response = client.send(request);
         //请求失败
         if(response.getCode() != 0){
@@ -45,11 +47,8 @@ public class CustomInvocationHandler implements InvocationHandler {
             return JSONArray.parseArray(response.getData().toString(),Object.class);
         }else if(Map.class.isAssignableFrom(returnType)){
             return JSONObject.parseObject(response.getData().toString(),Map.class);
+        }else {
+            return JSONObject.parseObject(response.getData().toString(),returnType.getClass());
         }
-
-
-
-
-        return null;
     }
 }

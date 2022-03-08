@@ -23,11 +23,7 @@ public class ClassPathScanner extends ClassPathScanningCandidateComponentProvide
      */
     @Override
     protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
-        boolean isCandidate = false;
-        if (beanDefinition.getMetadata().isIndependent() && !beanDefinition.getMetadata().isAnnotation()) {
-            isCandidate = true;
-        }
-        return isCandidate;
+        return beanDefinition.getMetadata().isInterface() && beanDefinition.getMetadata().isIndependent();
     }
 
 
