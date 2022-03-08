@@ -1,8 +1,8 @@
-package com.dyzwj.rpc.producer.registry;
+package com.dyzwj.rpc.spring.registry;
 
 import java.util.List;
 
-public interface ServiceRegistry {
+public interface NamingService {
 
     /**
      * 注册
@@ -27,6 +27,6 @@ public interface ServiceRegistry {
      * 查询指定实例
      * @return
      */
-    List<Instance> selectInstance();
+    List<Instance> selectInstance(String appName);
 
 }

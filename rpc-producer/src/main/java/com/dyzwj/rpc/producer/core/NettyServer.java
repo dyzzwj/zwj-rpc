@@ -3,11 +3,9 @@ package com.dyzwj.rpc.producer.core;
 
 import com.dyzwj.rpc.producer.handler.ServerHandler;
 import com.dyzwj.rpc.producer.handler.ServerStartHandler;
-import com.dyzwj.rpc.producer.registry.Instance;
-import com.dyzwj.rpc.producer.registry.ServiceRegistry;
-import io.netty.bootstrap.Bootstrap;
+import com.dyzwj.rpc.spring.registry.Instance;
+import com.dyzwj.rpc.spring.registry.NamingService;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -15,12 +13,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -34,7 +28,7 @@ public class NettyServer implements ApplicationListener<ContextRefreshedEvent> {
     private ServerHandler serverHandler;
 
     @Autowired
-    private ServiceRegistry  serviceRegistry;
+    private NamingService namingService;
 
     private NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -75,7 +69,7 @@ public class NettyServer implements ApplicationListener<ContextRefreshedEvent> {
                 log.info(".........server  init..........");
                 ChannelFuture future = bootstrap.bind(split[0],Integer.parseInt(split[1])).sync();
                 log.info(".........server start..........");
-                serviceRegistry.register(new Instance(applicationName,split[0],Integer.parseInt(split[1])));
+                namingService.register(new Instance(applicationName,split[0],Integer.parseInt(split[1])));
                 future.channel().closeFuture().sync();
 
             }catch (Exception e){

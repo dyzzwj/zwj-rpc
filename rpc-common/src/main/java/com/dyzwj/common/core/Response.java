@@ -8,6 +8,13 @@ public class Response{
 
     private Object data;
 
+    public static Response errorResponse(){
+        Response res = new Response();
+        res.setCode(1);
+        res.setInfo("未正确连接到服务器.请检查相关配置信息!");
+        return res;
+    }
+
     public Integer getRequestId() {
         return requestId;
     }

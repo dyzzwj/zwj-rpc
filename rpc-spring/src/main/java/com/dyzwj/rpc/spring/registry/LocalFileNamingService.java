@@ -1,4 +1,4 @@
-package com.dyzwj.rpc.producer.registry;
+package com.dyzwj.rpc.spring.registry;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,11 +6,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
 @Component
-public class LocalFileServiceRegistry implements ServiceRegistry{
+public class LocalFileNamingService implements NamingService {
 
     @Value("${registry.file.path}")
     private String filePath;
@@ -47,7 +48,19 @@ public class LocalFileServiceRegistry implements ServiceRegistry{
     }
 
     @Override
-    public List<Instance> selectInstance() {
+    public List<Instance> selectInstance(String appName) {
+        try{
+            File file = new File(filePath + appName);
+            if(!file.exists()){
+                return Collections.EMPTY_LIST;
+            }
+
+
+
+        }catch (Exception e){
+            log.error("服务注册失败",e.toString());
+        }
+
         return null;
     }
 }

@@ -1,4 +1,4 @@
-package com.dyzwj.rpc.producer.registry;
+package com.dyzwj.rpc.spring.registry;
 
 public class Instance {
 
