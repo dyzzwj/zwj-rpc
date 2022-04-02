@@ -4,6 +4,7 @@ import com.dyzwj.common.core.Request;
 import com.dyzwj.common.core.Response;
 import com.dyzwj.rpc.consumer.handler.ClientHandler;
 import com.dyzwj.rpc.spring.client.Client;
+import com.dyzwj.rpc.spring.client.Connection;
 import com.dyzwj.rpc.spring.registry.Instance;
 import com.dyzwj.rpc.spring.registry.NamingService;
 import io.netty.bootstrap.Bootstrap;
@@ -31,11 +32,10 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
     private NioEventLoopGroup eventExecutors = new NioEventLoopGroup();
 
 
-
     @Autowired
     private ClientHandler clientHandler;
 
-    private Channel channel;
+    private NettyConnection nettyConnection;
 
     @Autowired
     NamingService namingService;
@@ -83,7 +83,7 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
                             return;
                         }
                         // 连接成功
-                        channel = future.channel();
+                        nettyConnection = new NettyConnection(future.channel());
                         log.info("[start][Netty Client 连接服务器({}:{}) 成功]",host, port);
                     }
 
@@ -112,16 +112,19 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
 
     @Override
     public Response send(Request request) {
-        if (channel == null) {
+        if (nettyConnection.getChannel() == null) {
             log.error("[send][连接不存在]");
             return Response.errorResponse();
         }
-        if (!channel.isActive()) {
-            log.error("[send][连接({})未激活]", channel.id());
+        if (!nettyConnection.getChannel().isActive()) {
+            log.error("[send][连接({})未激活]", nettyConnection.getChannel().id());
             return Response.errorResponse();
         }
-        return clientHandler.sendRequest(channel,request);
+        return clientHandler.sendRequest(nettyConnection.getChannel(),request);
     }
 
-
+    @Override
+    public Connection getConnection() {
+        return nettyConnection;
+    }
 }

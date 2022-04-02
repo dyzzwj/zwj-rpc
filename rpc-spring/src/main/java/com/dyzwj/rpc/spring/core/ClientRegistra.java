@@ -28,8 +28,6 @@ public class ClientRegistra implements ImportBeanDefinitionRegistrar {
 
     private void processBeanDefinition(BeanDefinition beanDefinition){
         GenericBeanDefinition bd = (GenericBeanDefinition) beanDefinition;
-
-
         bd.getConstructorArgumentValues().addGenericArgumentValue(beanDefinition.getBeanClassName());
         bd.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
         //偷天换日

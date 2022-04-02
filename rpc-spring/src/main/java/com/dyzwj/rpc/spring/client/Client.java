@@ -5,6 +5,9 @@ import com.dyzwj.common.core.Response;
 
 public interface Client {
 
+
+    Connection getConnection();
+
     Response send(Request request);
 
 }

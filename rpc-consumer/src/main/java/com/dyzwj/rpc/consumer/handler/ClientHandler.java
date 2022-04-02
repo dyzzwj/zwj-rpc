@@ -33,11 +33,13 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     public Response sendRequest(Channel channel, Request request) {
+        //同步阻塞队列
         SynchronousQueue<String> queue = new SynchronousQueue<>();
         requestMap.put(request.getRequestId(),queue);
         channel.writeAndFlush(request);
         String take = null;
         try {
+            //阻塞
             take = queue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
